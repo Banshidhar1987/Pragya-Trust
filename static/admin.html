@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Pragnya Educational & Social Trust</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-page {
+      display: none;
+    }
+
+    .admin-page.active {
+      display: block;
+    }
+
+    .overflow-x-auto {
+      overflow-x: auto;
+    }
+
+    .delete-btn {
+      background-color: #dc2626;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .delete-btn:hover {
+      background-color: #991b1b;
+    }
+
+    .image-preview {
+      max-width: 200px;
+      max-height: 200px;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .dashboard-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="header-brand" style="display: flex; align-items: center; gap: 1rem;">
+        <img src="images/logo.jpeg" alt="Pragnya Logo" style="max-width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+        <div>
+          <h1>Pragnya Educational & Social Service, Bhubaneswar</h1>
+          <p>A clean, eco-friendly trust for education and tree plantation.</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="admin-btn" onclick="window.location.href='index.html'">Exit</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Login Page -->
+    <section id="login-page" class="admin-page active">
+      <div class="container" style="padding-top: 5rem; padding-bottom: 5rem; max-width: 40rem;">
+        <div class="section-card">
+          <h1 style="color: var(--brand-blue);">Admin Login</h1>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" required placeholder="Enter admin username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required placeholder="Enter admin password">
+            </div>
+            <button type="submit">Log In</button>
+            <div id="login-error"></div>
+          </form>
+          <p style="margin-top: 2rem; text-align: center; font-size: 0.875rem; color: var(--slate-600);">
+            <strong>Demo Credentials:</strong><br>
+            Username: <code style="background: var(--slate-50); padding: 0.2rem 0.4rem; border-radius: 0.25rem;">admin</code><br>
+            Password: <code style="background: var(--slate-50); padding: 0.2rem 0.4rem; border-radius: 0.25rem;">pragnya123</code>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboard-page" class="admin-page">
+      <div class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+        <div class="space-y-8">
+          <!-- Dashboard Header -->
+          <div class="section-card">
+            <div class="dashboard-header">
+              <div>
+                <h1 style="color: var(--brand-blue); margin-bottom: 0.5rem;">Admin Dashboard</h1>
+                <p>Manage gallery uploads and review registration / feedback data stored in your browser.</p>
+              </div>
+              <button class="btn-logout" onclick="logout()">Log Out</button>
+            </div>
+          </div>
+
+          <!-- Gallery Management -->
+          <div class="section-card">
+            <h2 style="color: var(--brand-green); margin-bottom: 1rem;">Gallery Management</h2>
+            <form id="gallery-upload-form">
+              <div class="form-group">
+                <label for="caption">Caption</label>
+                <input type="text" id="caption" name="caption" required placeholder="Image caption">
+              </div>
+              <div class="form-group">
+                <label for="image">Image File</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+              </div>
+              <button type="submit">Upload Image</button>
+              <div id="upload-status"></div>
+              <img id="image-preview" class="image-preview" style="display: none;">
+            </form>
+          </div>
+
+          <!-- Two Column Layout -->
+          <div class="grid-2">
+            <!-- Members Table -->
+            <div class="section-card overflow-x-auto">
+              <h2 style="color: var(--brand-blue); margin-bottom: 1rem;">Members</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Interest</th>
+                  </tr>
+                </thead>
+                <tbody id="members-table">
+                  <tr><td colspan="4" style="text-align: center; color: var(--slate-500);">No members yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Feedback Table -->
+            <div class="section-card overflow-x-auto">
+              <h2 style="color: var(--brand-blue); margin-bottom: 1rem;">Feedback</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody id="feedback-table">
+                  <tr><td colspan="4" style="text-align: center; color: var(--slate-500);">No feedback yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Gallery Display -->
+          <div class="section-card">
+            <h2 style="color: var(--brand-green); margin-bottom: 1rem;">Current Gallery Items</h2>
+            <div class="gallery-grid" id="gallery-display">
+              <p style="text-align: center; color: var(--slate-500); grid-column: 1/-1;">No gallery images uploaded yet.</p>
+            </div>
+          </div>
+
+          <!-- Data Management -->
+          <div class="section-card">
+            <h2 style="color: var(--brand-blue); margin-bottom: 1rem;">Data Management</h2>
+            <p>Export, import, or backup your data. All data is stored in your browser's storage.</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <button onclick="exportData()" class="btn">📥 Export Data as JSON</button>
+              <button onclick="document.getElementById('import-json').click()" class="btn">📤 Import Data from JSON</button>
+              <button onclick="clearAllData()" class="btn btn-secondary">🗑️ Clear All Data</button>
+              <input type="file" id="import-json" accept=".json" style="display: none;">
+            </div>
+            <div id="import-status"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Pragnya Educational & Social Trust. Built with local storage and HTML/CSS/JS.
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Admin credentials
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'pragnya123';
+
+    function checkAdminStatus() {
+      if (Storage.isAdminLoggedIn()) {
+        document.getElementById('login-page').classList.remove('active');
+        document.getElementById('dashboard-page').classList.add('active');
+        loadDashboard();
+      } else {
+        document.getElementById('login-page').classList.add('active');
+        document.getElementById('dashboard-page').classList.remove('active');
+      }
+    }
+
+    function login(username, password) {
+      if (username === ADMIN_USER && password === ADMIN_PASS) {
+        Storage.setAdminLogin(true);
+        checkAdminStatus();
+        document.getElementById('login-form').reset();
+      } else {
+        showStatus('login-error', 'Invalid admin credentials.', 'error');
+      }
+    }
+
+    function logout() {
+      Storage.setAdminLogin(false);
+      checkAdminStatus();
+    }
+
+    function loadDashboard() {
+      // Load members
+      const members = Storage.getMembers();
+      const membersTable = document.getElementById('members-table');
+      if (members.length > 0) {
+        membersTable.innerHTML = members.map(m => `
+          <tr>
+            <td>${m.name}</td>
+            <td>${m.email}</td>
+            <td>${m.phone}</td>
+            <td>${m.interest}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Load feedback
+      const feedback = Storage.getFeedback();
+      const feedbackTable = document.getElementById('feedback-table');
+      if (feedback.length > 0) {
+        feedbackTable.innerHTML = feedback.map(f => `
+          <tr>
+            <td>${f.name}</td>
+            <td>${f.email}</td>
+            <td>${f.phone}</td>
+            <td>${f.message}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Load gallery
+      const gallery = Storage.getGallery();
+      const galleryDisplay = document.getElementById('gallery-display');
+      if (gallery.length > 0) {
+        galleryDisplay.innerHTML = gallery.map((item, idx) => `
+          <div class="gallery-item">
+            <img src="${item.path}" alt="${item.caption}" style="height: 10rem; width: 100%; object-fit: cover;">
+            <div class="gallery-item-caption">
+              <p>${item.caption}</p>
+              <small style="color: var(--slate-500); font-size: 0.75rem;">
+                ${formatDate(item.uploadedAt)}
+              </small>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function exportData() {
+      const data = {
+        members: Storage.getMembers(),
+        feedback: Storage.getFeedback(),
+        gallery: Storage.getGallery(),
+        exportedAt: new Date().toISOString()
+      };
+
+      const dataStr = JSON.stringify(data, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `pragnya-data-${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAllData() {
+      if (confirm('Are you sure? This will delete ALL data (members, feedback, gallery). This cannot be undone!')) {
+        localStorage.clear();
+        loadDashboard();
+        showStatus('upload-status', 'All data has been cleared.', 'info');
+      }
+    }
+
+    // Image preview
+    document.getElementById('image').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const preview = document.getElementById('image-preview');
+          preview.src = event.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Gallery upload
+    document.getElementById('gallery-upload-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const caption = document.getElementById('caption').value.trim();
+      const imageFile = document.getElementById('image').files[0];
+
+      if (!caption || !imageFile) {
+        showStatus('upload-status', 'Please add both image and caption.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const imageBase64 = event.target.result;
+        Storage.addGalleryItem(caption, imageBase64);
+        showStatus('upload-status', 'Image uploaded successfully.', 'success');
+        document.getElementById('gallery-upload-form').reset();
+        document.getElementById('image-preview').style.display = 'none';
+        loadDashboard();
+      };
+      reader.readAsDataURL(imageFile);
+    });
+
+    // Login form
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      login(username, password);
+    });
+
+    // JSON Import handler
+    document.getElementById('import-json').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const data = JSON.parse(event.target.result);
+          
+          // Import members
+          if (data.members && Array.isArray(data.members)) {
+            localStorage.setItem(Storage.KEY_MEMBERS, JSON.stringify(data.members));
+          }
+          
+          // Import feedback
+          if (data.feedback && Array.isArray(data.feedback)) {
+            localStorage.setItem(Storage.KEY_FEEDBACK, JSON.stringify(data.feedback));
+          }
+          
+          // Import gallery
+          if (data.gallery && Array.isArray(data.gallery)) {
+            localStorage.setItem(Storage.KEY_GALLERY, JSON.stringify(data.gallery));
+          }
+
+          showStatus('import-status', `✅ Data imported successfully! Loaded ${(data.members || []).length} members, ${(data.feedback || []).length} feedback, ${(data.gallery || []).length} gallery items.`, 'success');
+          loadDashboard();
+        } catch (error) {
+          showStatus('import-status', '❌ Invalid JSON file. Please check the file format.', 'error');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = ''; // Reset input
+    });
+
+    // Load gallery.json on first visit
+    fetch('data/gallery.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data.gallery && data.gallery.length > 0) {
+          const existing = Storage.getGallery();
+          if (existing.length === 0) {
+            localStorage.setItem(Storage.KEY_GALLERY, JSON.stringify(data.gallery));
+          }
+        }
+      })
+      .catch(err => console.log('data/gallery.json not found (optional)'));
+
+    // Load feedback.json on first visit
+    fetch('data/feedback.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data.feedback && data.feedback.length > 0) {
+          const existing = Storage.getFeedback();
+          if (existing.length === 0) {
+            localStorage.setItem(Storage.KEY_FEEDBACK, JSON.stringify(data.feedback));
+          }
+        }
+      })
+      .catch(err => console.log('data/feedback.json not found (optional)'));
+
+    // Load members.json on first visit
+    fetch('data/members.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data.members && data.members.length > 0) {
+          const existing = Storage.getMembers();
+          if (existing.length === 0) {
+            localStorage.setItem(Storage.KEY_MEMBERS, JSON.stringify(data.members));
+          }
+        }
+      })
+      .catch(err => console.log('data/members.json not found (optional)'));
+
+    // Check admin status on page load
+    checkAdminStatus();
+  </script>
+</body>
+</html>

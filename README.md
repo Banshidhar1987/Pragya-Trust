@@ -1,42 +1,94 @@
-# Pragnya Educational & Social Trust
+# Pragnya Educational & Social Trust - Website
 
-A Next.js + Tailwind CSS website with local JSON flat-file storage and file uploads to `public/uploads/`.
+A clean, lightweight website for Pragnya Trust built with **pure HTML, CSS, and JavaScript** - **no backend required**.
 
-## Features
+## 🚀 Quick Start
 
-- Home page with hero section, chairman/managing trustee messages, mission, and donation box.
-- Registration form that saves to `data/members.json`.
-- Contact/feedback form that saves to `data/feedback.json`.
-- Gallery page that displays images from `public/uploads/` and `data/gallery.json`.
-- Admin dashboard with hardcoded login, gallery upload, and local data viewing.
+### To Deploy (GoDaddy or Any Static Host)
 
-## Setup
+1. **Upload Files**: 
+   - Open: `static/` folder
+   - Select ALL files and folders inside it
+   - Upload to your hosting's `public_html` folder via File Manager or FTP
 
-1. Install dependencies:
+2. **Visit Your Domain**: 
+   - Go to your domain URL
+   - Done! ✅
 
-```bash
-npm install
+### Features
+
+✅ **Automatic Slideshow** on homepage  
+✅ **Gallery** with image captions  
+✅ **Member Registration Form** - saves to browser  
+✅ **Contact/Feedback Form** - saves to browser  
+✅ **Admin Dashboard** - upload images, view data  
+✅ **Export/Import Data** - backup as JSON  
+✅ **Responsive Design** - mobile, tablet, desktop  
+✅ **Professional Logo** - on all pages  
+✅ **No Database Required** - no backend server needed  
+
+---
+
+## 📁 What to Upload
+
+**Upload everything inside the `static/` folder:**
+
+```
+static/
+├── index.html              # 🏠 Homepage
+├── gallery.html            # 🖼️ Gallery
+├── register.html           # 📝 Registration
+├── contact.html            # 💬 Feedback
+├── admin.html              # ⚙️ Admin (login: admin/pragnya123)
+├── styles.css              # 🎨 All styling
+├── script.js               # 📜 JavaScript utilities
+├── data/                   # 📊 Data templates
+│   ├── gallery.json
+│   ├── feedback.json
+│   └── members.json
+├── images/                 # 🖼️ Images
+│   ├── logo.jpeg
+│   └── uploads/            # (for uploaded images)
+└── README.md
 ```
 
-2. Run development server:
+---
 
-```bash
-npm run dev
-```
+## 🔐 Admin Login
 
-3. Open in browser:
-
-```text
-http://localhost:3000
-```
-
-## Admin
-
+**Default Credentials:**
 - Username: `admin`
 - Password: `pragnya123`
 
-## Notes
+⚠️ **Change these after first login!**
 
-- No external database is used.
-- Data is stored in `data/*.json`.
-- Uploaded images are saved in `public/uploads/`.
+---
+
+## 💾 How Data Works
+
+- **Forms** → Saved to browser's localStorage
+- **Images** → Stored as base64 in localStorage  
+- **Backup** → Export from Admin Dashboard (saves as JSON)
+- **Restore** → Import JSON from Admin Dashboard
+
+---
+
+## 📖 Full Deployment Guide
+
+See **DEPLOYMENT_GUIDE.md** for detailed step-by-step instructions.
+
+---
+
+## ✨ No Dependencies
+
+- ✅ No Node.js
+- ✅ No npm packages
+- ✅ No backend server
+- ✅ No database
+- ✅ Pure HTML/CSS/JavaScript
+
+Works on **any static hosting** (GoDaddy, Netlify, Vercel, GitHub Pages, etc.)
+
+---
+
+**Ready to deploy? Upload the `static/` folder contents now! 🚀**

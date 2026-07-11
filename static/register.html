@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Pragnya Educational & Social Trust</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="header-brand" style="display: flex; align-items: center; gap: 1rem;">
+        <img src="images/logo.jpeg" alt="Pragnya Logo" style="max-width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+        <div>
+          <h1>Pragnya Educational & Social Service, Bhubaneswar</h1>
+          <p>A clean, eco-friendly trust for education and tree plantation.</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About Us</a>
+        <a href="gallery.html">Photo</a>
+        <a href="register.html">Member</a>
+        <a href="index.html#videos">Videos</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+      <button class="admin-btn">Admin</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="container" style="padding-top: 3rem; padding-bottom: 3rem; max-width: 50rem;">
+      <div class="section-card">
+        <h1 style="color: var(--brand-blue);">Join as Member</h1>
+        <p>Register your interest and become part of our education and environment programs.</p>
+
+        <form id="register-form">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Your full name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXXXXXXX">
+          </div>
+
+          <div class="form-group">
+            <label for="interest">Interest *</label>
+            <select id="interest" name="interest" required>
+              <option value="">-- Select your interest --</option>
+              <option value="Free Education">Free Education</option>
+              <option value="Tree Plantation">Tree Plantation</option>
+              <option value="Both">Both Programs</option>
+              <option value="Volunteering">Volunteering</option>
+              <option value="Donation">Supporting as Donor</option>
+            </select>
+          </div>
+
+          <button type="submit">Register Now</button>
+
+          <div id="register-status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Pragnya Educational & Social Trust. Built with local storage and HTML/CSS/JS.
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const interest = document.getElementById('interest').value;
+
+      // Validation
+      if (!name || !email || !phone || !interest) {
+        showStatus('register-status', 'Please fill all fields.', 'error');
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showStatus('register-status', 'Please enter a valid email.', 'error');
+        return;
+      }
+
+      if (!validatePhone(phone)) {
+        showStatus('register-status', 'Please enter a valid phone number.', 'error');
+        return;
+      }
+
+      // Save to storage
+      Storage.addMember({ name, email, phone, interest });
+
+      showStatus('register-status', 'Thank you for registering! We will contact you soon.', 'success');
+      document.getElementById('register-form').reset();
+    });
+  </script>
+</body>
+</html>

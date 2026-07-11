@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery - Pragnya Educational & Social Trust</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="header-brand" style="display: flex; align-items: center; gap: 1rem;">
+        <img src="images/logo.jpeg" alt="Pragnya Logo" style="max-width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+        <div>
+          <h1>Pragnya Educational & Social Service, Bhubaneswar</h1>
+          <p>A clean, eco-friendly trust for education and tree plantation.</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About Us</a>
+        <a href="gallery.html">Photo</a>
+        <a href="register.html">Member</a>
+        <a href="index.html#videos">Videos</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+      <button class="admin-btn">Admin</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+      <div class="section-card">
+        <h1 style="color: var(--brand-blue);">Photo Gallery</h1>
+        <p>Browse pictures from our education sessions, plantation drives, and community events.</p>
+
+        <div class="gallery-grid" id="gallery-container">
+          <!-- Gallery items will be loaded here -->
+        </div>
+
+        <div id="no-gallery" class="section-card" style="margin-top: 2rem; text-align: center; color: var(--slate-700);">
+          No gallery images yet. Images will appear here.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Pragnya Educational & Social Trust. Built with local storage and HTML/CSS/JS.
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function loadGallery() {
+      const gallery = Storage.getGallery();
+      const container = document.getElementById('gallery-container');
+      const noGallery = document.getElementById('no-gallery');
+
+      if (gallery.length === 0) {
+        container.style.display = 'none';
+        noGallery.style.display = 'block';
+        return;
+      }
+
+      container.style.display = 'grid';
+      noGallery.style.display = 'none';
+      container.innerHTML = gallery.map((item, index) => `
+        <div class="gallery-item">
+          <img src="${item.path}" alt="${item.caption || 'Gallery'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
+          <div class="gallery-item-caption">
+            <p>${item.caption || 'Community Event'}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    loadGallery();
+  </script>
+</body>
+</html>
